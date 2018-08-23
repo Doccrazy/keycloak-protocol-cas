@@ -109,14 +109,16 @@ public class CASLoginProtocol implements LoginProtocol {
 
     @Override
     public void backchannelLogout(UserSessionModel userSession, AuthenticatedClientSessionModel clientSession) {
-        String logoutUrl = clientSession.getRedirectUri();
-        String serviceTicket = clientSession.getNote(CASLoginProtocol.SESSION_SERVICE_TICKET);
-        //check if session is fully authenticated (i.e. serviceValidate has been called)
-        if (serviceTicket != null && !serviceTicket.isEmpty()) {
-            sendSingleLogoutRequest(logoutUrl, serviceTicket);
+        String logoutUrl = clientSession.getClient().getManagementUrl();
+        if (logoutUrl != null &&logoutUrl.equals("")) {
+            String serviceTicket = clientSession.getNote(CASLoginProtocol.SESSION_SERVICE_TICKET);
+            //check if session is fully authenticated (i.e. serviceValidate has been called)
+            if (serviceTicket != null && !serviceTicket.isEmpty()) {
+                sendSingleLogoutRequest(logoutUrl, serviceTicket);
+            }
+            ClientModel client = clientSession.getClient();
+            new ResourceAdminManager(session).logoutClientSession(uriInfo.getRequestUri(), realm, client, clientSession);
         }
-        ClientModel client = clientSession.getClient();
-        new ResourceAdminManager(session).logoutClientSession(uriInfo.getRequestUri(), realm, client, clientSession);
     }
 
     private void sendSingleLogoutRequest(String logoutUrl, String serviceTicket) {

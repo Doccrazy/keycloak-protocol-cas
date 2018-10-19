@@ -114,7 +114,12 @@ public class CASLoginProtocol implements LoginProtocol {
             String serviceTicket = clientSession.getNote(CASLoginProtocol.SESSION_SERVICE_TICKET);
             //check if session is fully authenticated (i.e. serviceValidate has been called)
             if (serviceTicket != null && !serviceTicket.isEmpty()) {
-                sendSingleLogoutRequest(logoutUrl, serviceTicket);
+                String[] logoutUrls=logoutUrl.split(";");
+                if(logoutUrls.length>1){
+                    for(int i=0;i<logoutUrls.length;i++){
+                        sendSingleLogoutRequest(logoutUrls[i], serviceTicket);
+                    }
+                }
             }
             ClientModel client = clientSession.getClient();
             new ResourceAdminManager(session).logoutClientSession(uriInfo.getRequestUri(), realm, client, clientSession);

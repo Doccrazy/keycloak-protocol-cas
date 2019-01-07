@@ -6,6 +6,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.jboss.logging.Logger;
 import org.keycloak.connections.httpclient.HttpClientProvider;
 import org.keycloak.models.KeycloakSession;
 
@@ -24,12 +25,15 @@ public class LogoutHelper {
             "  <saml:NameID xmlns:saml=\"urn:oasis:names:tc:SAML:2.0:assertion\">@NOT_USED@</saml:NameID>\n" +
             "  <samlp:SessionIndex>$SESSION_IDENTIFIER</samlp:SessionIndex>\n" +
             "</samlp:LogoutRequest>";
+    private static final Logger logger = Logger.getLogger(LogoutHelper.class);
+
 
     public static HttpEntity buildSingleLogoutRequest(String serviceTicket) {
         String id = "ID_" + UUID.randomUUID().toString();
         String issueInstant = new SimpleDateFormat("yyyy-MM-dd'T'H:mm:ss").format(new Date());
         String document = TEMPLATE.replace("$ID", id).replace("$ISSUE_INSTANT", issueInstant)
                 .replace("$SESSION_IDENTIFIER", serviceTicket);
+        logger.debug("Cas Logout Info:" + document);
         return new StringEntity(document, ContentType.APPLICATION_XML.withCharset(StandardCharsets.UTF_8));
     }
 

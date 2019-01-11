@@ -20,6 +20,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 public class LogoutEndpoint {
@@ -62,11 +63,11 @@ public class LogoutEndpoint {
             if (redirectUri != null) userSession.setNote(CASLoginProtocol.LOGOUT_REDIRECT_URI, redirectUri);
 
             logger.debug("Initiating CAS browser logout");
-            Response response =  AuthenticationManager.browserLogout(session, realm, authResult.getSession(), uriInfo, clientConnection, headers);
+            Response response = AuthenticationManager.browserLogout(session, realm, authResult.getSession(), uriInfo, clientConnection, headers);
             logger.debug("finishing CAS browser logout");
             return response;
         }
-        return ErrorPage.error(session, null, Response.Status.BAD_REQUEST, Messages.FAILED_LOGOUT);
+        return Response.seeOther(UriBuilder.fromUri(service).build()).build();
     }
 
     private void checkClient(String service) {

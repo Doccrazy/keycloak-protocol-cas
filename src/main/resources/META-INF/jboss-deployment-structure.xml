@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <deployment>
+        <dependencies>
+            <!-- keycloak libraries -->
+            <module name="org.keycloak.keycloak-common"/>
+            <module name="org.keycloak.keycloak-core"/>
+            <module name="org.keycloak.keycloak-server-spi"/>
+            <module name="org.keycloak.keycloak-server-spi-private"/>
+            <module name="org.keycloak.keycloak-services"/>
+            <module name="org.keycloak.keycloak-saml-core"/>
+            <module name="org.keycloak.keycloak-saml-core-public"/>
+            <!-- 3rd party -->
+            <module name="com.sun.xml.bind" services="import"/>
+            <module name="org.jboss.logging"/>
+            <module name="javax.ws.rs.api"/>
+            <module name="org.apache.httpcomponents"/>
+            <module name="org.jboss.resteasy.resteasy-jaxrs"/>
+        </dependencies>
+    </deployment>
+</jboss-deployment-structure>

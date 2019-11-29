@@ -1,5 +1,6 @@
 package org.keycloak.protocol.cas.utils;
 
+import org.jboss.logging.Logger;
 import org.keycloak.protocol.cas.representations.CASErrorCode;
 import org.keycloak.protocol.cas.representations.CASServiceResponse;
 import org.keycloak.protocol.cas.representations.CASServiceResponseAuthenticationFailure;
@@ -12,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 public final class ServiceResponseHelper {
+    protected static final Logger logger = Logger.getLogger(ServiceResponseHelper.class);
+
     private ServiceResponseHelper() {
     }
 
@@ -47,9 +50,13 @@ public final class ServiceResponseHelper {
         Response.ResponseBuilder builder = Response.status(status)
                 .header(HttpHeaders.CONTENT_TYPE, mediaType.withCharset("utf-8"));
         if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType)) {
-            return builder.entity(ServiceResponseMarshaller.marshalJson(serviceResponse)).build();
+            String response = ServiceResponseMarshaller.marshalJson(serviceResponse);
+            logger.debug("CAS serviceValidate response: " + response);
+            return builder.entity(response).build();
         } else {
-            return builder.entity(ServiceResponseMarshaller.marshalXml(serviceResponse)).build();
+            String response = ServiceResponseMarshaller.marshalXml(serviceResponse);
+            logger.debug("CAS serviceValidate response: " + response);
+            return builder.entity(response).build();
         }
     }
 }

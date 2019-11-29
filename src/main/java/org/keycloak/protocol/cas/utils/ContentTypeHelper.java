@@ -3,7 +3,6 @@ package org.keycloak.protocol.cas.utils;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.keycloak.protocol.cas.CASLoginProtocol;
 
-import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.*;
 
 public class ContentTypeHelper {
@@ -26,7 +25,7 @@ public class ContentTypeHelper {
         try {
             Variant variant = restRequest.selectVariant(Variant.mediaTypes(MediaType.APPLICATION_XML_TYPE, MediaType.APPLICATION_JSON_TYPE).build());
             return variant == null ? MediaType.APPLICATION_XML_TYPE : variant.getMediaType();
-        } catch (BadRequestException e) {
+        } catch (Exception e) {
             //the default Accept header set by java.net.HttpURLConnection is invalid (cf. RESTEASY-960)
             return MediaType.APPLICATION_XML_TYPE;
         }

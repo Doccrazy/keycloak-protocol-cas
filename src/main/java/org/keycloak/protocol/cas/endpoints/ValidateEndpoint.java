@@ -11,6 +11,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import java.util.UUID;
 
 public class ValidateEndpoint extends AbstractValidateEndpoint {
 
@@ -41,7 +42,16 @@ public class ValidateEndpoint extends AbstractValidateEndpoint {
             event.success();
             return successResponse();
         } catch (CASValidationException e) {
+            logger.info("CASValidationException :", e);
             return errorResponse(e);
+        } catch (Exception ex) {
+            // unexpected, probably not clients fault
+            final String uuid = UUID.randomUUID().toString();
+            logger.warn("CAS General exception [" + uuid + "] :", ex);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(uuid)
+                    .type(MediaType.TEXT_PLAIN)
+                    .build();
         }
     }
 

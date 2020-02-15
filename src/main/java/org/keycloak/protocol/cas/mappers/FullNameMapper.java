@@ -42,9 +42,22 @@ public class FullNameMapper extends AbstractCASProtocolMapper {
     public void setAttribute(Map<String, Object> attributes, ProtocolMapperModel mappingModel, UserSessionModel userSession,
                              KeycloakSession session, ClientSessionContext clientSessionCt) {
         UserModel user = userSession.getUser();
-        String first = user.getFirstName() == null ? "" : user.getFirstName() + " ";
-        String last = user.getLastName() == null ? "" : user.getLastName();
-        setMappedAttribute(attributes, mappingModel, first + last);
+        String firstName = user.getFirstName();
+        String lastName = user.getLastName();
+        String fullName = "";
+        
+        if (!isBlank(firstName) && !isBlank(lastName)) {
+            fullName = firstName + " " + lastName;
+        } else if (!isBlank(firstName)) {
+            fullName = firstName;
+        } else if (!isBlank(lastName)) {
+            fullName = lastName;
+        }
+        setMappedAttribute(attributes, mappingModel, fullName);
+    }
+    
+    private static boolean isBlank(String attr) {
+        return attr == null || attr.trim().isEmpty();
     }
 
     public static ProtocolMapperModel create(String name, String tokenClaimName) {

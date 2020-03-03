@@ -63,7 +63,7 @@ public abstract class AbstractValidateEndpoint {
 
         client = realm.getClients().stream()
                 .filter(c -> CASLoginProtocol.LOGIN_PROTOCOL.equals(c.getProtocol()))
-                .filter(c -> RedirectUtils.verifyRedirectUri(session.getContext().getUri(), service, realm, c) != null)
+                .filter(c -> RedirectUtils.verifyRedirectUri(session, service, c) != null)
                 .findFirst().orElse(null);
         if (client == null) {
             event.error(Errors.CLIENT_NOT_FOUND);
@@ -153,7 +153,7 @@ public abstract class AbstractValidateEndpoint {
     protected Map<String, Object> getUserAttributes() {
         UserSessionModel userSession = clientSession.getUserSession();
         // CAS protocol does not support scopes, so pass null scopeParam
-        ClientSessionContext clientSessionCtx = DefaultClientSessionContext.fromClientSessionAndScopeParameter(clientSession, null);
+        ClientSessionContext clientSessionCtx = DefaultClientSessionContext.fromClientSessionAndScopeParameter(clientSession, null, session);
 
         Set<ProtocolMapperModel> mappings = clientSessionCtx.getProtocolMappers();
         KeycloakSessionFactory sessionFactory = session.getKeycloakSessionFactory();

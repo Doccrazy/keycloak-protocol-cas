@@ -41,7 +41,7 @@ jobs:
           mkdir build/docker
           cd build/docker
           cp ../libs/*.jar ./keycloak-protocol-cas.jar
-          echo "FROM quay.io/keycloak/keycloak:7.0.0" > Dockerfile
+          echo "FROM quay.io/keycloak/keycloak:10.0.2" > Dockerfile
           echo "ADD keycloak-protocol-cas.jar /opt/jboss/keycloak/standalone/deployments/" >> Dockerfile
           docker build -t doccrazy/keycloak-cas .
           cd -

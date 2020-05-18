@@ -6,7 +6,6 @@ import org.keycloak.dom.saml.v1.protocol.SAML11StatusCodeType;
 import org.keycloak.dom.saml.v1.protocol.SAML11StatusType;
 import org.keycloak.protocol.cas.utils.CASValidationException;
 import org.keycloak.saml.common.exceptions.ProcessingException;
-import org.keycloak.saml.processing.core.saml.v1.SAML11Constants;
 import org.keycloak.saml.processing.core.saml.v1.writers.SAML11ResponseWriter;
 import org.keycloak.services.validation.Validation;
 import org.w3c.dom.Document;
@@ -38,6 +37,20 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SamlResponseHelper {
+
+    /*
+     * OLD Constants from SAML11Constants.java which got removed in
+     * https://github.com/keycloak/keycloak/commit/6ee6001f392e572a0f4660b948d2c7adf1466d4c
+     */
+    interface CasSAML11Constants {
+
+        String AUTH_METHOD_PASSWORD = "urn:oasis:names:tc:SAML:1.0:am:password";
+
+        String FORMAT_EMAIL_ADDRESS = "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress";
+
+        String FORMAT_UNSPECIFIED = "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified";
+    }
+
     private final static DatatypeFactory factory;
 
     static {
@@ -74,7 +87,7 @@ public class SamlResponseHelper {
                             conditions.setNotOnOrAfter(factory.newXMLGregorianCalendar(GregorianCalendar.from(nowZoned.plusMinutes(5))));
                         }));
                         assertion.add(applyTo(new SAML11AuthenticationStatementType(
-                                URI.create(SAML11Constants.AUTH_METHOD_PASSWORD),
+                                URI.create(CasSAML11Constants.AUTH_METHOD_PASSWORD),
                                 now
                         ), stmt -> stmt.setSubject(toSubject(username))));
                         assertion.addAllStatements(toAttributes(username, attributes));
@@ -141,8 +154,8 @@ public class SamlResponseHelper {
 
     private static URI nameIdFormat(String username) {
         return URI.create(Validation.isEmailValid(username) ?
-                SAML11Constants.FORMAT_EMAIL_ADDRESS :
-                SAML11Constants.FORMAT_UNSPECIFIED
+                CasSAML11Constants.FORMAT_EMAIL_ADDRESS :
+                CasSAML11Constants.FORMAT_UNSPECIFIED
         );
     }
 

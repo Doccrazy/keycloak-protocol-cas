@@ -28,9 +28,9 @@
 
     <properties>
         <keycloak.version>${project.version}</keycloak.version>
-        <jboss.logging.version>3.3.2.Final</jboss.logging.version>
-        <jboss.logging.tools.version>2.1.0.Final</jboss.logging.tools.version>
-        <junit.version>4.12</junit.version>
+        <jboss.logging.version>3.4.1.Final</jboss.logging.version>
+        <jboss.logging.tools.version>2.2.1.Final</jboss.logging.tools.version>
+        <junit.version>4.13</junit.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -112,7 +112,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
@@ -124,7 +124,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.2.0</version>
                 <configuration>
                     <archive>
                         <manifestEntries>

@@ -1,0 +1,46 @@
+repositories {
+  jcenter()
+}
+
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'jacoco'
+
+group 'corg.keycloak'
+version '7.0.0'
+description 'Keycloak CAS Protocol'
+
+sourceCompatibility = 1.8
+
+configurations {
+  testCompile.extendsFrom compileOnly
+}
+
+dependencies {
+  //keycloak
+  compileOnly "org.jboss.logging:jboss-logging:${project.property('jboss-logging-version')}"
+  compileOnly "org.jboss.logging:jboss-logging-annotations:${project.property('jboss.logging.tools.version')}"
+  compileOnly "org.jboss.logging:jboss-logging-processor:${project.property('jboss.logging.tools.version')}"
+  compileOnly "org.keycloak:keycloak-core:${project.property('keycloak-version')}"
+  compileOnly "org.keycloak:keycloak-saml-core:${project.property('keycloak-version')}"
+  compileOnly "org.keycloak:keycloak-services:${project.property('keycloak-version')}"
+  compileOnly "org.keycloak:keycloak-server-spi:${project.property('keycloak-version')}"
+  compileOnly "org.keycloak:keycloak-server-spi-private:${project.property('keycloak-version')}"
+
+  // Use JUnit test framework
+  testCompile 'junit:junit:4.13'
+  testCompile 'org.xmlunit:xmlunit-core:2.3.0'
+  testCompile 'com.jayway.jsonpath:json-path:2.2.0'
+}
+
+compileJava {
+  options.compilerArgs << '-AgeneratedTranslationFilesPath=dist/generated-translation-files'
+}
+
+jar {
+  manifest {
+    attributes(
+      "Dependencies": "javax.xml.bind.api,org.keycloak.keycloak-core,org.keycloak.keycloak-server-spi,org.keycloak.keycloak-server-spi-private,org.keycloak.keycloak-services,org.keycloak.keycloak-saml-core,org.keycloak.keycloak-saml-core-public",
+    )
+  }
+}

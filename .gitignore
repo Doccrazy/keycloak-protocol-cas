@@ -42,10 +42,7 @@ nbproject
 ######################
 *.log
 
-# Maven #
+# Gradle #
 #########
-target
-
-# Maven shade
-#############
-*dependency-reduced-pom.xml
+build/
+.gradle/
